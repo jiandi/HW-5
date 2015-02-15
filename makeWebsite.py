@@ -116,7 +116,7 @@ def project_info (f,project):
     '''write project information'''
     project_info=[]
     f.write('<div>\n')
-    title = surround_block('h3','Projects')
+    title = surround_block('h2','Projects')
     f.writelines(title)
     for projects in project:
         project_info.extend(surround_block('li',surround_block('p',projects)))
@@ -128,10 +128,11 @@ def course_info (f,course):
     '''write course information'''
     course_info=[]
     f.write('<div>\n')
-    title = surround_block('h4','Courses')
+    title = surround_block('h3','Courses')
     f.writelines(title)
     for courses in course:
         course_info.extend(surround_block('span',courses))
+##        course_info.extend(',')
     f.writelines(course_info)
     f.write('</div>\n\n')
 
