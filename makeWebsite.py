@@ -62,32 +62,62 @@ def education_detect(list_of_lines):
     return educationList
 
 
-def resume_open():
+def surround_block(tag,text):
+    '''A function that surrounds some text in an html block'''
+    return '<',tag,'>',text,'</',tag,'>'
+
+
+    
+def initial_step(f):
+    f.write('<div id="page-wrap">')
+    f.write('\n')
+    
+def final_step(f):
+    f.write('</div')
+
+    
+def basic_info(f,name,email):
+    Name = surround_block('h1',name)
+    Email = surround_block('p',email)
+##    basic_info = surround_block('div',Name+Email)
+    f.writelines(Name)
+    
+    
+
+def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
-    f=open('/Users/Ecko/Desktop/HW5/resume.html')
+    f=open('/Users/Ecko/Desktop/HW-5/resume.html','r++')
     lines = f.readlines()
     f.seek(0)
     f.truncate()
-    del lines[-1]
-    del lines[-1]
-    f.writelines(lines)
+##    del lines[-1]
+##    del lines[-1]
+    initial_step(f)
+    basic_info(f,name,email)
+
+
+    final_step(f)
 
 
 def main():
-    filename = raw_input('Please enter a file you want to open:')
+##    filename = raw_input('Please enter a file you want to open:')
+    filename = 'resume.txt'
     f = open(filename)
     lines = f.readlines()
-    resumeName = name_detect(lines)
-    resumeEmail = email_detect(lines)
-    resumeCourse = course_detect(lines)
-    resumeProject = projects_detect(lines)
-    resumeEducation = education_detect(lines)
+    Name = name_detect(lines)
+    Email = email_detect(lines)
+    Course = course_detect(lines)
+    Project = projects_detect(lines)
+    Education = education_detect(lines)
     f.close()
 ##    print resumeName
 ##    print resumeEmail
 ##    print resumeCourse
 ##    print resumeProject
 ##    print resumeEducation
+    resume_open(Name,Email,Course,Project,Education)
+    
+    
 
 if __name__ =="__main__":
     main()
