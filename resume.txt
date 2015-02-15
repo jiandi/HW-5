@@ -1,0 +1,21 @@
+Jian Li
+
+University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engineering 
+
+Shanghai Jiao Tong University, Shanghai, China  -  Bachelor of Science in Mechanical Engineering 
+
+lijian2@seas.upenn.edu
+
+Courses - : Programming Languages and Techniques, Feedback Control, Foundation of Engineering Math
+
+Projects
+Robockey, University of Pennsylvania, USA - Project member, designed 3 robots to play hockey in the rink, and finally we won the 6th place of all 24 teams. 
+
+PUMA Light Painting - Using MATLAB to solve the inverse kinematics of the puma robot and make it draw a picture that we wanted!
+
+------------------------------
+
+
+
+
+

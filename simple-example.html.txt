@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <title>My Title</title>
+</head>
+
+<body>
+<div id="1">
+<h1>My First Heading</h1>
+<h2>My second Heading</h2>
+<h3>My Third Heading</h3>
+</div>
+<div id="2">
