@@ -5,6 +5,7 @@ University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engin
 Shanghai Jiao Tong University, Shanghai, China  -  Bachelor of Science in Mechanical Engineering 
 
 lijian2@seas.upenn.edu
+mayaoyu@seas.upenn.edu
 
 Courses - : Programming Languages and Techniques, Feedback Control, Foundation of Engineering Math
 
