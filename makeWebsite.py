@@ -9,6 +9,7 @@ def name_detect(list_of_lines):
 
 def email_detect(list_of_lines):
     '''get the email address from the file'''
+    emailAddress=[]
     for line in list_of_lines:
         lineReal = line.rstrip().lstrip()
         if '@' in lineReal:
@@ -18,8 +19,8 @@ def email_detect(list_of_lines):
                         numStart = i
                 strOfEmail = lineReal[numStart+1:(len(lineReal)- 4)]
                 if strOfEmail[0] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
-                    return lineReal
-    return ''
+                    emailAddress.append(lineReal)
+    return emailAddress
 
 def course_detect(list_of_lines):
     '''get the courses from the file'''
@@ -62,7 +63,15 @@ def education_detect(list_of_lines):
     return educationList
     
             
-    
+def resume_open():
+    '''open the resume.html file'''
+    f = open('resume.html', 'r+')
+    lines = f.readlines()
+    f.seek(0)
+    f.truncate()
+    del lines[-1]
+    del lines[-1]
+    f.writelines(lines)
 
 def main():
     filename = raw_input('Please enter a file you want to open:')
@@ -73,12 +82,9 @@ def main():
     resumeCourse = course_detect(lines)
     resumeProject = projects_detect(lines)
     resumeEducation = education_detect(lines)
-    f.close()
-    print resumeName
     print resumeEmail
-    print resumeCourse
-    print resumeProject
-    print resumeEducation
+    f.close()
+    
 
 if __name__ =="__main__":
     main()
