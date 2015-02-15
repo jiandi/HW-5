@@ -20,17 +20,20 @@ class Test_makeWebsite(unittest.TestCase):
 
     def test_email_detect(self):
         emailAdd = email_detect(['Jian Li','lijian2@seas.upenn.edu','UPenn'])
-        self.assertEqual('lijian2@seas.upenn.edu',emailAdd)
+        self.assertEqual(['lijian2@seas.upenn.edu'],emailAdd)
       
 
         #If there are '.COM' or '.EDU' in the address
         emailAdd2 = email_detect(['Jian Li','lijian2@seas.upenn.EDU','UPenn'])
         emailAdd3 = email_detect(['Jian Li','jiandi_li@163.COM','UPenn'])
-        self.assertEqual('',emailAdd2)
-        self.assertEqual('',emailAdd3)
+        self.assertEqual([],emailAdd2)
+        self.assertEqual([],emailAdd3)
         #If there is no string begin with a normal lowercase between '@'and the ending
         emailAdd4 = email_detect(['Jian Li','UPenn','jiandi_li@163.com'])
-        self.assertEqual('',emailAdd4)
+        self.assertEqual([],emailAdd4)
+        #If there are two email addresses in the list
+        emailAdd5 = set(email_detect(['Jian Li','UPenn','lijian2@seas.upenn.edu','jiandi_li@gmail.com']))
+        self.assertEqual(set(['lijian2@seas.upenn.edu','jiandi_li@gmail.com']),emailAdd5)
 
     def test_course_detect(self):
         #We should ignore the punctuation

@@ -9,6 +9,7 @@ def name_detect(list_of_lines):
 
 def email_detect(list_of_lines):
     '''get the email address from the file'''
+    emailAddress=[]
     for line in list_of_lines:
         lineReal = line.rstrip().lstrip()
         if '@' in lineReal:
@@ -18,8 +19,8 @@ def email_detect(list_of_lines):
                         numStart = i
                 strOfEmail = lineReal[numStart+1:(len(lineReal)- 4)]
                 if strOfEmail[0] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
-                    return lineReal
-    return ''
+                    emailAddress.append(lineReal)
+    return emailAddress
 
 def course_detect(list_of_lines):
     '''get the courses from the file'''
@@ -64,25 +65,43 @@ def education_detect(list_of_lines):
 
 def surround_block(tag,text):
     '''A function that surrounds some text in an html block'''
-    return '<',tag,'>',text,'</',tag,'>'
+    return '<',tag,'>\n',text,'\n</',tag,'>\n'
 
 
     
 def initial_step(f):
-    f.write('<div id="page-wrap">')
-    f.write('\n')
+    f.write('<div id="page-wrap">\n\n')
+    
     
 def final_step(f):
-    f.write('</div')
+    f.write('</div>')
 
     
 def basic_info(f,name,email):
+    '''write basic information'''
+    basic_information=[]
+    f.write('<div>\n')
     Name = surround_block('h1',name)
-    Email = surround_block('p',email)
-##    basic_info = surround_block('div',Name+Email)
-    f.writelines(Name)
-    
-    
+    basic_information.extend(Name)
+    for mail in email:
+        basic_information.extend( surround_block('p',mail))
+    f.writelines(basic_information)
+##    print surround_block('div',basic_information)
+    f.write('</div>\n\n')
+
+
+def education_info (f,education):
+    '''write education information'''
+    f.write('</div>\n')
+    title = surround_block('h2','Education')
+    f.writelines(title)
+    f.write('<ul>\n')
+    for edu in education:
+        Education = surround_block('li',edu)
+        f.writelines(Education)
+    f.write('</ul>\n')
+    f.write('</div>\n\n')
+
 
 def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
@@ -94,7 +113,7 @@ def resume_open(name,email,course,project,education):
 ##    del lines[-1]
     initial_step(f)
     basic_info(f,name,email)
-
+    education_info (f,education)
 
     final_step(f)
 
@@ -110,11 +129,11 @@ def main():
     Project = projects_detect(lines)
     Education = education_detect(lines)
     f.close()
-##    print resumeName
-##    print resumeEmail
-##    print resumeCourse
-##    print resumeProject
-##    print resumeEducation
+    print Name
+    print Email
+    print Course
+    print Project
+    print Education
     resume_open(Name,Email,Course,Project,Education)
     
     
