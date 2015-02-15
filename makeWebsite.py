@@ -63,43 +63,76 @@ def education_detect(list_of_lines):
     return educationList
 
 
-def surround_block(tag,text):
-    '''A function that surrounds some text in an html block'''
-    return '<',tag,'>\n',text,'\n</',tag,'>\n'
+##def surround_block(tag,text):
+##    '''A function that surrounds some text in an html block'''
+##    return '<',tag,'>\n',text,'\n</',tag,'>\n'
 
-
+def surround_block(tag,lst):
+    lists=['<']
+    lists.append(tag)
+    lists.append('>\n')
+    for element in lst:
+        lists.extend(element)
+    lists.append('\n</')
+    lists.append(tag)
+    lists.append('>\n')
+    return lists
     
 def initial_step(f):
     f.write('<div id="page-wrap">\n\n')
     
     
 def final_step(f):
-    f.write('</div>')
+    f.write('</div>\n')
+    f.write('</body>\n')
+    f.write('</html>\n')
+    
 
     
 def basic_info(f,name,email):
     '''write basic information'''
     basic_information=[]
-    f.write('<div>\n')
     Name = surround_block('h1',name)
     basic_information.extend(Name)
     for mail in email:
         basic_information.extend( surround_block('p',mail))
+    basic_information = surround_block('div',basic_information)
     f.writelines(basic_information)
-##    print surround_block('div',basic_information)
-    f.write('</div>\n\n')
 
 
 def education_info (f,education):
     '''write education information'''
-    f.write('</div>\n')
+    edu_info=[]
+    f.write('<div>\n')
     title = surround_block('h2','Education')
     f.writelines(title)
-    f.write('<ul>\n')
     for edu in education:
-        Education = surround_block('li',edu)
-        f.writelines(Education)
-    f.write('</ul>\n')
+        edu_info.extend(surround_block('li',edu))
+    edu_info = surround_block('ul',edu_info)
+    f.writelines(edu_info)
+    f.write('</div>\n\n')
+
+def project_info (f,project):
+    '''write project information'''
+    project_info=[]
+    f.write('<div>\n')
+    title = surround_block('h3','Projects')
+    f.writelines(title)
+    for projects in project:
+        project_info.extend(surround_block('li',surround_block('p',projects)))
+    project_info = surround_block('ul',project_info)
+    f.writelines(project_info)
+    f.write('</div>\n\n')
+
+def course_info (f,course):
+    '''write course information'''
+    course_info=[]
+    f.write('<div>\n')
+    title = surround_block('h4','Courses')
+    f.writelines(title)
+    for courses in course:
+        course_info.extend(surround_block('span',courses))
+    f.writelines(course_info)
     f.write('</div>\n\n')
 
 
@@ -114,6 +147,8 @@ def resume_open(name,email,course,project,education):
     initial_step(f)
     basic_info(f,name,email)
     education_info (f,education)
+    project_info(f,project)
+    course_info(f,course)
 
     final_step(f)
 
