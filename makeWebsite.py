@@ -60,9 +60,18 @@ def education_detect(list_of_lines):
             if len(lineReal) > 0:
                 educationList.append(lineReal)
     return educationList
-    
-            
-    
+
+
+def resume_open():
+    '''Open up the resume file'''
+    f=open('/Users/Ecko/Desktop/HW5/resume.html')
+    lines = f.readlines()
+    f.seek(0)
+    f.truncate()
+    del lines[-1]
+    del lines[-1]
+    f.writelines(lines)
+
 
 def main():
     filename = raw_input('Please enter a file you want to open:')
@@ -74,11 +83,11 @@ def main():
     resumeProject = projects_detect(lines)
     resumeEducation = education_detect(lines)
     f.close()
-    print resumeName
-    print resumeEmail
-    print resumeCourse
-    print resumeProject
-    print resumeEducation
+##    print resumeName
+##    print resumeEmail
+##    print resumeCourse
+##    print resumeProject
+##    print resumeEducation
 
 if __name__ =="__main__":
     main()
