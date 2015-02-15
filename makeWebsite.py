@@ -130,16 +130,17 @@ def course_info (f,course):
     f.write('<div>\n')
     title = surround_block('h3','Courses')
     f.writelines(title)
-    for courses in course:
-        course_info.extend(surround_block('span',courses))
+    for courses in course[0:len(course)-1]:
+        course_info.extend(surround_block('span',courses+','))
 ##        course_info.extend(',')
+    course_info.extend(surround_block('span',course[-1]))
     f.writelines(course_info)
     f.write('</div>\n\n')
 
 
 def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
-    f=open('/Users/Ecko/Desktop/HW-5/resume.html','r++')
+    f=open('resume.html','r+')
     lines = f.readlines()
     f.seek(0)
     f.truncate()
