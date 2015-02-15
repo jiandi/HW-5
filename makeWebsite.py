@@ -61,29 +61,81 @@ def education_detect(list_of_lines):
             if len(lineReal) > 0:
                 educationList.append(lineReal)
     return educationList
+
+
+def surround_block(tag,text):
+    '''A function that surrounds some text in an html block'''
+    return '<',tag,'>\n',text,'\n</',tag,'>\n'
+
+
     
-            
-def resume_open():
-    '''open the resume.html file'''
-    f = open('resume.html', 'r+')
+def initial_step(f):
+    f.write('<div id="page-wrap">\n\n')
+    
+    
+def final_step(f):
+    f.write('</div>')
+
+    
+def basic_info(f,name,email):
+    '''write basic information'''
+    basic_information=[]
+    f.write('<div>\n')
+    Name = surround_block('h1',name)
+    basic_information.extend(Name)
+    for mail in email:
+        basic_information.extend( surround_block('p',mail))
+    f.writelines(basic_information)
+##    print surround_block('div',basic_information)
+    f.write('</div>\n\n')
+
+
+def education_info (f,education):
+    '''write education information'''
+    f.write('</div>\n')
+    title = surround_block('h2','Education')
+    f.writelines(title)
+    f.write('<ul>\n')
+    for edu in education:
+        Education = surround_block('li',edu)
+        f.writelines(Education)
+    f.write('</ul>\n')
+    f.write('</div>\n\n')
+
+
+def resume_open(name,email,course,project,education):
+    '''Open up the resume file'''
+    f=open('/Users/Ecko/Desktop/HW-5/resume.html','r++')
     lines = f.readlines()
     f.seek(0)
     f.truncate()
-    del lines[-1]
-    del lines[-1]
-    f.writelines(lines)
+##    del lines[-1]
+##    del lines[-1]
+    initial_step(f)
+    basic_info(f,name,email)
+    education_info (f,education)
+
+    final_step(f)
+
 
 def main():
-    filename = raw_input('Please enter a file you want to open:')
+##    filename = raw_input('Please enter a file you want to open:')
+    filename = 'resume.txt'
     f = open(filename)
     lines = f.readlines()
-    resumeName = name_detect(lines)
-    resumeEmail = email_detect(lines)
-    resumeCourse = course_detect(lines)
-    resumeProject = projects_detect(lines)
-    resumeEducation = education_detect(lines)
-    print resumeEmail
+    Name = name_detect(lines)
+    Email = email_detect(lines)
+    Course = course_detect(lines)
+    Project = projects_detect(lines)
+    Education = education_detect(lines)
     f.close()
+    print Name
+    print Email
+    print Course
+    print Project
+    print Education
+    resume_open(Name,Email,Course,Project,Education)
+    
     
 
 if __name__ =="__main__":
