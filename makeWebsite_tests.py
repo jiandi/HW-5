@@ -6,8 +6,9 @@ class Test_makeWebsite(unittest.TestCase):
 
     filename = ''
     def setUp(self):
-        self.filename = 'resume.txt'
-        self.htmlfile = 'my_unittest_of_HW5.html'
+        self.filename = 'resume.html'
+        self.filename2 = 'my_test_for_HW5.txt'
+        
 
     def test_name_detect(self):
         #input a normal line with name in it
@@ -71,7 +72,79 @@ class Test_makeWebsite(unittest.TestCase):
         htmlBlock2 = surround_block('div',['Jian Li','UPenn'])
         self.assertEqual(['<','div','>\n','J','i','a','n',' ','L','i','U','P','e','n','n','\n</','div','>\n'],htmlBlock2)
 
-   
+    def test_initial_step(self):
+        f_initial = open(self.filename)
+        lines = f_initial.readlines()
+        f_initial.close()
+        self.assertTrue('<div id="page-wrap">\n' in lines)
 
+    def test_final_step(self):
+        f_final = open(self.filename)
+        lines = f_final.readlines()
+        f_final.close()
+        self.assertTrue('</div>\n' in lines)
+        self.assertTrue('</body>\n' in lines)
+        self.assertTrue('</html>\n' in lines)
+
+    def test_basic_info(self):
+        f_basic = open(self.filename2,'w')
+        basic_info(f_basic,'Jian Li',['lijian2@seas.upenn.edu'])
+        f_basic.close()
+        f_basic_r = open(self.filename2)
+        lines = f_basic_r.readlines()
+        f_basic_r.close()
+        self.assertTrue('Jian Li\n' in lines)
+        self.assertTrue('lijian2@seas.upenn.edu\n' in lines)
+
+    def test_education_info(self):
+        f_education = open(self.filename2,'w')
+        education_info(f_education,['University of Pennsylvania','Shanghai Jiao Tong University'])
+        f_education.close()
+        f_education_r = open(self.filename2)
+        lines = f_education_r.readlines()
+        f_education_r.close()
+        self.assertTrue('Education\n' in lines)
+        self.assertTrue('University of Pennsylvania\n' in lines)
+        self.assertTrue('Shanghai Jiao Tong University\n' in lines)
+
+    def test_project_info(self):
+        f_project = open(self.filename2,'w')
+        project_info(f_project,['Robockey','PUMA Light Painting'])
+        f_project.close()
+        f_project_r = open(self.filename2)
+        lines = f_project_r.readlines()
+        f_project_r.close()
+        self.assertTrue('Projects\n' in lines)
+        self.assertTrue('Robockey\n' in lines)
+        self.assertTrue('PUMA Light Painting\n' in lines)
+
+    def test_course_info(self):
+        f_course = open(self.filename2,'w')
+        course_info(f_course,['CIT590','MEAM513','ENM510'])
+        f_course.close()
+        f_course_r = open(self.filename2)
+        lines = f_course_r.readlines()
+        f_course_r.close()
+        self.assertTrue('Courses\n' in lines)
+        self.assertTrue('CIT590,\n' in lines)
+        self.assertTrue('MEAM513,\n' in lines)
+        self.assertTrue('ENM510\n' in lines)
+
+    def test_resume_open(self):
+        f_resume = open(self.filename)
+        lines = f_resume.readlines()
+        f_resume.close()
+        self.assertTrue('Jian Li\n' in lines)
+        self.assertTrue('lijian2@seas.upenn.edu\n' in lines)
+        self.assertTrue('Education\n' in lines)
+        self.assertTrue('University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engineering\n' in lines)
+        self.assertTrue('Shanghai Jiao Tong University, Shanghai, China  -  Bachelor of Science in Mechanical Engineering\n' in lines)
+        self.assertTrue('Projects\n' in lines)
+        self.assertTrue('Robockey, University of Pennsylvania, USA - Project member, designed 3 robots to play hockey in the rink, and finally we won the 6th place of all 24 teams.\n' in lines)
+        self.assertTrue('PUMA Light Painting - Using MATLAB to solve the inverse kinematics of the puma robot and make it draw a picture that we wanted!\n' in lines)
+        self.assertTrue('Courses\n' in lines)
+        self.assertTrue('Programming Languages and Techniques,\n' in lines)
+        self.assertTrue(' Feedback Control,\n' in lines)
+        self.assertTrue(' Foundation of Engineering Math\n' in lines)
         
 unittest.main()
