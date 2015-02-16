@@ -7,6 +7,7 @@ class Test_makeWebsite(unittest.TestCase):
     filename = ''
     def setUp(self):
         self.filename = 'resume.txt'
+        self.htmlfile = 'my_unittest_of_HW5.html'
 
     def test_name_detect(self):
         #input a normal line with name in it
@@ -62,4 +63,15 @@ class Test_makeWebsite(unittest.TestCase):
         education3 = set(education_detect(['Jian Li','robockey-university of pennsylvania','University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering\n','\n','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering\n']))
         self.assertEqual(set(['University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering']),education3)
 
+    def test_surround_block(self):
+        htmlBlock = surround_block('div',['Jian Li'])
+        self.assertEqual(['<','div','>\n','J','i','a','n',' ','L','i','\n</','div','>\n'],htmlBlock)
+
+        #if there are more than one element in the argument list
+        htmlBlock2 = surround_block('div',['Jian Li','UPenn'])
+        self.assertEqual(['<','div','>\n','J','i','a','n',' ','L','i','U','P','e','n','n','\n</','div','>\n'],htmlBlock2)
+
+   
+
+        
 unittest.main()

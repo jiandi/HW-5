@@ -68,6 +68,7 @@ def education_detect(list_of_lines):
 ##    return '<',tag,'>\n',text,'\n</',tag,'>\n'
 
 def surround_block(tag,lst):
+    '''A function that surrounds some text(lists) in an html file'''
     lists=['<']
     lists.append(tag)
     lists.append('>\n')
@@ -95,7 +96,7 @@ def basic_info(f,name,email):
     Name = surround_block('h1',name)
     basic_information.extend(Name)
     for mail in email:
-        basic_information.extend( surround_block('p',mail))
+        basic_information.extend(surround_block('p',mail))
     basic_information = surround_block('div',basic_information)
     f.writelines(basic_information)
 
@@ -132,7 +133,6 @@ def course_info (f,course):
     f.writelines(title)
     for courses in course[0:len(course)-1]:
         course_info.extend(surround_block('span',courses+','))
-##        course_info.extend(',')
     course_info.extend(surround_block('span',course[-1]))
     f.writelines(course_info)
     f.write('</div>\n\n')
@@ -146,6 +146,8 @@ def resume_open(name,email,course,project,education):
     f.truncate()
     del lines[-1]
     del lines[-1]
+    f.writelines(lines)
+    #Then write each information in the resume step by step
     initial_step(f)
     basic_info(f,name,email)
     education_info (f,education)
