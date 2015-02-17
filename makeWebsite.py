@@ -1,9 +1,26 @@
 #author - Jian Li & Yike Chen
+import string
+
+def isLetter(letter):
+    '''check if the letter is lower case'''
+    if letter in string.ascii_lowercase:
+        return True
+    else:
+        return False
+
+
+def isLetter2(letter):
+    '''Check if the letter is uppercase'''
+    if letter in string.ascii_uppercase:
+        return True
+    else:
+        return False
+
 
 def name_detect(list_of_lines):
     '''get the name from the resume..'''
     resumeName = list_of_lines[0].rstrip().strip()
-    if (resumeName)[0] not in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']:
+    if not isLetter2(resumeName[0]):
         raise NameError('Please write your name with proper capitalization')
     else:
         return resumeName
@@ -19,7 +36,7 @@ def email_detect(list_of_lines):
                     if lineReal[i] == '@':
                         numStart = i
                 strOfEmail = lineReal[numStart+1:(len(lineReal)- 4)]
-                if strOfEmail[0] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
+                if isLetter(strOfEmail[0]):
                     emailAddress.append(lineReal)
     return emailAddress
 
@@ -30,7 +47,7 @@ def course_detect(list_of_lines):
         lineReal = line.rstrip().lstrip()
         if 'Courses' in lineReal:
             for i in range(7,len(lineReal)):
-                if (lineReal[i] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']) or (lineReal[i] in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']):
+                if isLetter(lineReal[i])or isLetter2(lineReal[i]):
                     firstCourseWord = i
                     break
             courses = lineReal[firstCourseWord:len(lineReal)]
@@ -153,7 +170,8 @@ def course_info (f,course):
 def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
     filename_html = raw_input('Please enter a html file you want to write into:')
-    f=open(filename_html,'r+')    lines = f.readlines()
+    f=open(filename_html,'r+')
+    lines = f.readlines()
     f.seek(0)
     f.truncate()
     del lines[-1]

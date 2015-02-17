@@ -1,4 +1,5 @@
 #author - Jian Li & Yike Chen
+
 import unittest
 from makeWebsite import *
 
@@ -21,10 +22,10 @@ class Test_makeWebsite(unittest.TestCase):
 
 
     def test_email_detect(self):
+        # test critical function
         emailAdd = email_detect(['Jian Li','lijian2@seas.upenn.edu','UPenn'])
         self.assertEqual(['lijian2@seas.upenn.edu'],emailAdd)
       
-
         #If there are '.COM' or '.EDU' in the address
         emailAdd2 = email_detect(['Jian Li','lijian2@seas.upenn.EDU','UPenn'])
         emailAdd3 = email_detect(['Jian Li','jiandi_li@163.COM','UPenn'])
@@ -37,12 +38,14 @@ class Test_makeWebsite(unittest.TestCase):
         emailAdd5 = set(email_detect(['Jian Li','UPenn','lijian2@seas.upenn.edu','jiandi_li@gmail.com']))
         self.assertEqual(set(['lijian2@seas.upenn.edu','jiandi_li@gmail.com']),emailAdd5)
 
+
     def test_course_detect(self):
         #We should ignore the punctuation
         course1 = set(course_detect(['Jian Li','UPenn','SEAS','Courses:--:CIT590,Biomedical image analysis,Mechatronics\n','Sansom']))
         self.assertEqual(set(['CIT590','Biomedical image analysis','Mechatronics']),course1)
         course2 = set(course_detect(['Jian Li','UPenn','SEAS','Sansom','Courses,--::Robotics,Biomedical image analysis,Mechatronics\n']))
         self.assertEqual(set(['Robotics','Biomedical image analysis','Mechatronics']),course2)        
+
 
     def test_projects_detect(self):
         #there is a blank line 
@@ -52,7 +55,9 @@ class Test_makeWebsite(unittest.TestCase):
         project2 = set(projects_detect(['Jian Li\n','lijian2@seas.upenn.edu','Projects\n','\n','GRASP LAB\n','\n','Robockey\n','-----------\n']))
         self.assertEqual(set(['GRASP LAB','Robockey']),project2)
 
+
     def test_education_detect(self):
+        # test critical function
         education1 = set(education_detect(['Jian Li','University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering\n','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering\n']))
         self.assertEqual(set(['University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering']),education1)
         
@@ -64,6 +69,7 @@ class Test_makeWebsite(unittest.TestCase):
         education3 = set(education_detect(['Jian Li','robockey-university of pennsylvania','University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering\n','\n','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering\n']))
         self.assertEqual(set(['University of Pennsylvania, Philadelphia, PA, USA  -  Master of Science in Engneering','Shanghai Jiao Tong University,Shanghai, China  -  Bachelor of Science in Mechanical Engineering']),education3)
 
+
     def test_surround_block(self):
         htmlBlock = surround_block('div',['Jian Li'])
         self.assertEqual(['<','div','>\n','J','i','a','n',' ','L','i','\n</','div','>\n'],htmlBlock)
@@ -72,11 +78,13 @@ class Test_makeWebsite(unittest.TestCase):
         htmlBlock2 = surround_block('div',['Jian Li','UPenn'])
         self.assertEqual(['<','div','>\n','J','i','a','n',' ','L','i','U','P','e','n','n','\n</','div','>\n'],htmlBlock2)
 
+
     def test_initial_step(self):
         f_initial = open(self.filename)
         lines = f_initial.readlines()
         f_initial.close()
         self.assertTrue('<div id="page-wrap">\n' in lines)
+
 
     def test_final_step(self):
         f_final = open(self.filename)
@@ -85,6 +93,7 @@ class Test_makeWebsite(unittest.TestCase):
         self.assertTrue('</div>\n' in lines)
         self.assertTrue('</body>\n' in lines)
         self.assertTrue('</html>\n' in lines)
+
 
     def test_basic_info(self):
         f_basic = open(self.filename2,'w')
@@ -107,6 +116,7 @@ class Test_makeWebsite(unittest.TestCase):
         self.assertTrue('University of Pennsylvania\n' in lines)
         self.assertTrue('Shanghai Jiao Tong University\n' in lines)
 
+
     def test_project_info(self):
         f_project = open(self.filename2,'w')
         project_info(f_project,['Robockey','PUMA Light Painting'])
@@ -117,6 +127,7 @@ class Test_makeWebsite(unittest.TestCase):
         self.assertTrue('Projects\n' in lines)
         self.assertTrue('Robockey\n' in lines)
         self.assertTrue('PUMA Light Painting\n' in lines)
+
 
     def test_course_info(self):
         f_course = open(self.filename2,'w')
@@ -129,6 +140,7 @@ class Test_makeWebsite(unittest.TestCase):
         self.assertTrue('CIT590,\n' in lines)
         self.assertTrue('MEAM513,\n' in lines)
         self.assertTrue('ENM510\n' in lines)
+
 
     def test_resume_open(self):
         f_resume = open(self.filename)
