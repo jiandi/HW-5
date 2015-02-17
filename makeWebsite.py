@@ -1,4 +1,5 @@
 #author - Jian Li & Yike Chen
+
 def name_detect(list_of_lines):
     '''get the name from the resume..'''
     resumeName = list_of_lines[0].rstrip().strip()
@@ -72,29 +73,34 @@ def surround_block(tag,lst):
     lists=['<']
     lists.append(tag)
     lists.append('>\n')
+    # this subfunction is able to take a list of strings and surround them with tag
     for element in lst:
         lists.extend(element)
     lists.append('\n</')
     lists.append(tag)
     lists.append('>\n')
     return lists
+
     
 def initial_step(f):
+    '''write the first line of html'''
     f.write('<div id="page-wrap">\n\n')
     
     
 def final_step(f):
+    '''Conclude the html with these lines'''
     f.write('</div>\n')
     f.write('</body>\n')
     f.write('</html>\n')
     
 
-    
 def basic_info(f,name,email):
     '''write basic information'''
     basic_information=[]
     Name = surround_block('h1',name)
     basic_information.extend(Name)
+    # include multiple emails each with surround block, store them in basic information
+    # and then surround basic information in a block
     for mail in email:
         basic_information.extend(surround_block('p',mail))
     basic_information = surround_block('div',basic_information)
@@ -107,6 +113,8 @@ def education_info (f,education):
     f.write('<div>\n')
     title = surround_block('h2','Education')
     f.writelines(title)
+    # include multiple education background each with surround block, store them in education information
+    # and then surround education information in a block
     for edu in education:
         edu_info.extend(surround_block('li',edu))
     edu_info = surround_block('ul',edu_info)
@@ -119,6 +127,8 @@ def project_info (f,project):
     f.write('<div>\n')
     title = surround_block('h2','Projects')
     f.writelines(title)
+    # include multiple project each with surround block, store them in project information
+    # and then surround project information in a block
     for projects in project:
         project_info.extend(surround_block('li',surround_block('p',projects)))
     project_info = surround_block('ul',project_info)
@@ -131,8 +141,10 @@ def course_info (f,course):
     f.write('<div>\n')
     title = surround_block('h3','Courses')
     f.writelines(title)
+    # include multiple course with surround block, using +',' to solve the separation problem
     for courses in course[0:len(course)-1]:
         course_info.extend(surround_block('span',courses+','))
+    # The last course does not require a ',' to conclude it
     course_info.extend(surround_block('span',course[-1]))
     f.writelines(course_info)
     f.write('</div>\n\n')
@@ -141,8 +153,7 @@ def course_info (f,course):
 def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
     filename_html = raw_input('Please enter a html file you want to write into:')
-    f=open(filename_html,'r+')
-    lines = f.readlines()
+    f=open(filename_html,'r+')    lines = f.readlines()
     f.seek(0)
     f.truncate()
     del lines[-1]
@@ -154,12 +165,13 @@ def resume_open(name,email,course,project,education):
     education_info (f,education)
     project_info(f,project)
     course_info(f,course)
-
     final_step(f)
 
 
 def main():
-    filename = raw_input('Please enter a txt file you want to open:')
+    '''Main function, which reads date from txt file and write into html'''
+    filename = raw_input('Please enter a file you want to open:')
+##    filename = 'resume.txt'
     f = open(filename)
     lines = f.readlines()
     Name = name_detect(lines)
