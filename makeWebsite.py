@@ -140,7 +140,8 @@ def course_info (f,course):
 
 def resume_open(name,email,course,project,education):
     '''Open up the resume file'''
-    f=open('resume.html','r+')
+    filename_html = raw_input('Please enter a html file you want to write into:')
+    f=open(filename_html,'r+')
     lines = f.readlines()
     f.seek(0)
     f.truncate()
@@ -158,8 +159,7 @@ def resume_open(name,email,course,project,education):
 
 
 def main():
-##    filename = raw_input('Please enter a file you want to open:')
-    filename = 'resume.txt'
+    filename = raw_input('Please enter a txt file you want to open:')
     f = open(filename)
     lines = f.readlines()
     Name = name_detect(lines)
@@ -177,5 +177,5 @@ def main():
     
     
 
-'''if __name__ =="__main__":
-    main()'''
+if __name__ =="__main__":
+    main()
