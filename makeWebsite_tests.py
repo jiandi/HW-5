@@ -9,7 +9,16 @@ class Test_makeWebsite(unittest.TestCase):
     def setUp(self):
         self.filename = 'resume.html'
         self.filename2 = 'my_test_for_HW5.txt'
-        
+
+    def test_isLetter(self):
+        # input a lower case letter to see if it returns true
+        letter = isLetter('x')
+        self.assertEqual(True,letter)
+
+    def test_isLetter2(self):
+        # input a upper case letter to see if it returns true
+        letter = isLetter2('X')
+        self.assertEqual(True,letter)
 
     def test_name_detect(self):
         #input a normal line with name in it
