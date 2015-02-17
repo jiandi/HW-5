@@ -31,11 +31,13 @@ def email_detect(list_of_lines):
     for line in list_of_lines:
         lineReal = line.rstrip().lstrip()
         if '@' in lineReal:
+            #see if the line has .com or .edu in it
             if (lineReal[-4:-1]+lineReal[-1]) == '.com' or (lineReal[-4:-1]+lineReal[-1]) == '.edu':
                 for i in range(0,len(lineReal)):
                     if lineReal[i] == '@':
                         numStart = i
                 strOfEmail = lineReal[numStart+1:(len(lineReal)- 4)]
+                #judge if the first letter after @ is lower case
                 if isLetter(strOfEmail[0]):
                     emailAddress.append(lineReal)
     return emailAddress
@@ -47,9 +49,11 @@ def course_detect(list_of_lines):
         lineReal = line.rstrip().lstrip()
         if 'Courses' in lineReal:
             for i in range(7,len(lineReal)):
+                # let the index start from after course, and detect the fisrt letter, either lower or upper case
                 if isLetter(lineReal[i])or isLetter2(lineReal[i]):
                     firstCourseWord = i
                     break
+            #get the line of course and split it into courses
             courses = lineReal[firstCourseWord:len(lineReal)]
             courseNameList.extend(courses.split(','))
     return courseNameList
@@ -61,9 +65,11 @@ def projects_detect(list_of_lines):
         if 'Projects' in (list_of_lines[i]):
             projectNum = i
             break
+    #let the pointer start from after of title of Project
     for i in range(projectNum+1,len(list_of_lines)):
         projectName= list_of_lines[i].strip().lstrip()
         if len(projectName)>0:
+            # append project name
             if '----------' not in projectName:
                 projectList.append(projectName)
             elif '----------' in projectName:
@@ -74,6 +80,7 @@ def education_detect(list_of_lines):
     '''get the education information from the file'''
     educationList = []
     for line in list_of_lines:
+        #detect key words
         if ('University' in line or 'university' in line) and ('Bachelor' in line or 'bachelor' in line or 'Master' in line or 'master' in line or 'Doctor' in line or 'doctor' in line):
             lineReal = line.strip().lstrip()
             if len(lineReal) > 0:
