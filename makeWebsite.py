@@ -1,7 +1,7 @@
 #author - Jian Li & Yike Chen
 import string
 
-def isLetter(letter):
+def isLetterLower(letter):
     '''check if the letter is lower case'''
     if letter in string.ascii_lowercase:
         return True
@@ -9,7 +9,7 @@ def isLetter(letter):
         return False
 
 
-def isLetter2(letter):
+def isLetterUpper(letter):
     '''Check if the letter is uppercase'''
     if letter in string.ascii_uppercase:
         return True
@@ -19,14 +19,16 @@ def isLetter2(letter):
 
 def name_detect(list_of_lines):
     '''get the name from the resume..'''
-    resumeName = list_of_lines[0].rstrip().strip()
-    if not isLetter2(resumeName[0]):
+    #return a string
+    resumeName = list_of_lines[0].rstrip().lstrip()
+    if not isLetterUpper(resumeName[0]):
         raise NameError('Please write your name with proper capitalization')
     else:
         return resumeName
 
 def email_detect(list_of_lines):
     '''get the email address from the file'''
+    #return a list
     emailAddress=[]
     for line in list_of_lines:
         lineReal = line.rstrip().lstrip()
@@ -38,19 +40,20 @@ def email_detect(list_of_lines):
                         numStart = i
                 strOfEmail = lineReal[numStart+1:(len(lineReal)- 4)]
                 #judge if the first letter after @ is lower case
-                if isLetter(strOfEmail[0]):
+                if isLetterLower(strOfEmail[0]):
                     emailAddress.append(lineReal)
     return emailAddress
 
 def course_detect(list_of_lines):
     '''get the courses from the file'''
+    #return a list
     courseNameList = []
     for line in list_of_lines:
         lineReal = line.rstrip().lstrip()
         if 'Courses' in lineReal:
             for i in range(7,len(lineReal)):
                 # let the index start from after course, and detect the fisrt letter, either lower or upper case
-                if isLetter(lineReal[i])or isLetter2(lineReal[i]):
+                if isLetterLower(lineReal[i])or isLetterUpper(lineReal[i]):
                     firstCourseWord = i
                     break
             #get the line of course and split it into courses
@@ -60,6 +63,7 @@ def course_detect(list_of_lines):
             
 def projects_detect(list_of_lines):
     '''detect projects in the file'''
+    #return a list
     projectList = []
     for i in range(0,len(list_of_lines)):
         if 'Projects' in (list_of_lines[i]):
@@ -78,6 +82,7 @@ def projects_detect(list_of_lines):
 
 def education_detect(list_of_lines):
     '''get the education information from the file'''
+    #return a list
     educationList = []
     for line in list_of_lines:
         #detect key words
@@ -86,11 +91,6 @@ def education_detect(list_of_lines):
             if len(lineReal) > 0:
                 educationList.append(lineReal)
     return educationList
-
-
-##def surround_block(tag,text):
-##    '''A function that surrounds some text in an html block'''
-##    return '<',tag,'>\n',text,'\n</',tag,'>\n'
 
 def surround_block(tag,lst):
     '''A function that surrounds some text(lists) in an html file'''
@@ -105,21 +105,21 @@ def surround_block(tag,lst):
     lists.append('>\n')
     return lists
 
-    
-def initial_step(f):
+#The following functions are about writing html!   
+def initial_step_write(f):
     '''write the first line of html'''
     f.write('<div id="page-wrap">\n\n')
     
     
-def final_step(f):
+def final_step_write(f):
     '''Conclude the html with these lines'''
     f.write('</div>\n')
     f.write('</body>\n')
     f.write('</html>\n')
     
 
-def basic_info(f,name,email):
-    '''write basic information'''
+def write_basic_info(f,name,email):
+    '''write basic information into the html file--name and email'''
     basic_information=[]
     Name = surround_block('h1',name)
     basic_information.extend(Name)
@@ -131,7 +131,7 @@ def basic_info(f,name,email):
     f.writelines(basic_information)
 
 
-def education_info (f,education):
+def write_education_info (f,education):
     '''write education information'''
     edu_info=[]
     f.write('<div>\n')
@@ -145,7 +145,7 @@ def education_info (f,education):
     f.writelines(edu_info)
     f.write('</div>\n\n')
 
-def project_info (f,project):
+def write_project_info (f,project):
     '''write project information'''
     project_info=[]
     f.write('<div>\n')
@@ -159,38 +159,32 @@ def project_info (f,project):
     f.writelines(project_info)
     f.write('</div>\n\n')
 
-def course_info (f,course):
+def write_course_info (f,course):
     '''write course information'''
     course_info=[]
     f.write('<div>\n')
     title = surround_block('h3','Courses')
     f.writelines(title)
+
     # include multiple course with surround block, using +',' to solve the separation problem
-    for courses in course[0:len(course)-1]:
-        course_info.extend(surround_block('span',courses+','))
     # The last course does not require a ',' to conclude it
-    course_info.extend(surround_block('span',course[-1]))
+    for i in range(0,len(course)-1):
+        course[i] = course[i]+','
+    course_info.extend(surround_block('span',course))
     f.writelines(course_info)
     f.write('</div>\n\n')
 
 
-def resume_open(name,email,course,project,education):
-    '''Open up the resume file'''
-    filename_html = raw_input('Please enter a html file you want to write into:')
-    f=open(filename_html,'r+')
-    lines = f.readlines()
-    f.seek(0)
-    f.truncate()
-    del lines[-1]
-    del lines[-1]
-    f.writelines(lines)
-    #Then write each information in the resume step by step
-    initial_step(f)
-    basic_info(f,name,email)
-    education_info (f,education)
-    project_info(f,project)
-    course_info(f,course)
-    final_step(f)
+def resume_write(f,name,email,course,project,education):
+    '''Write all the information to the html file'''
+    #name is a string, other arguments are lists
+    #write each information in the resume step by step
+    initial_step_write(f)
+    write_basic_info(f,name,email)
+    write_education_info (f,education)
+    write_project_info(f,project)
+    write_course_info(f,course)
+    final_step_write(f)
 
 
 def main():
@@ -205,12 +199,24 @@ def main():
     Project = projects_detect(lines)
     Education = education_detect(lines)
     f.close()
+    #print all the informtion in the resume.txt
     print Name
     print Email
     print Course
     print Project
     print Education
-    resume_open(Name,Email,Course,Project,Education)
+
+    #Then for the writing html part
+    filename_html = raw_input('Please enter a html file you want to write into:')
+    f = open(filename_html,'r+')
+    lines = f.readlines()
+    f.seek(0)
+    f.truncate()
+    del lines[-1]
+    del lines[-1]
+    f.writelines(lines)
+    resume_write(f,Name,Email,Course,Project,Education)
+    f.close()
     
     
 
