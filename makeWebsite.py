@@ -22,7 +22,7 @@ def name_detect(list_of_lines):
     #return a string
     resumeName = list_of_lines[0].rstrip().lstrip()
     if not isLetterUpper(resumeName[0]):
-        raise NameError('Please write your name with proper capitalization')
+        raise NameError,'Please write your name with proper capitalization'
     else:
         return resumeName
 
@@ -189,8 +189,8 @@ def resume_write(f,name,email,course,project,education):
 
 def main():
     '''Main function, which reads date from txt file and write into html'''
-    filename = raw_input('Please enter a file you want to open:')
-##    filename = 'resume.txt'
+    #filename = raw_input('Please enter a file you want to open:')
+    filename = 'resume.txt'
     f = open(filename)
     lines = f.readlines()
     Name = name_detect(lines)
@@ -200,21 +200,30 @@ def main():
     Education = education_detect(lines)
     f.close()
     #print all the informtion in the resume.txt
-    print Name
-    print Email
-    print Course
-    print Project
-    print Education
+    #print Name
+    #print Email
+    #print Course
+    #print Project
+    #print Education
 
     #Then for the writing html part
-    filename_html = raw_input('Please enter a html file you want to write into:')
-    f = open(filename_html,'r+')
+    #filename_html = raw_input('Please enter a html file you want to write into:')
+
+    ##read the title from the resume_initial.html every time
+    filename_html = 'resume_initial.html'
+    f = open(filename_html)
     lines = f.readlines()
-    f.seek(0)
-    f.truncate()
+    #f.seek(0)
+    #f.truncate()
     del lines[-1]
     del lines[-1]
+    #f.writelines(lines)
+    f.close()
+    ##Then write the information into the resume.html
+    filename_html2 = 'resume.html'
+    f = open(filename_html2,'w')
     f.writelines(lines)
+    #write all the information into the resume.html
     resume_write(f,Name,Email,Course,Project,Education)
     f.close()
     
